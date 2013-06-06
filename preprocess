@@ -1,0 +1,36 @@
+#!/bin/bash
+                                                                              
+# path to this directory
+BASEDIR=$(dirname $0)
+
+# compile the code
+mkdir -p $BASEDIR/target/classes
+echo find $BASEDIR/src/main/java/ -iname *.java > files.txt
+find $BASEDIR/src/main/java/ -iname *.java > files.txt
+javac @files.txt -d $BASEDIR/target/classes
+rm files.txt
+
+# catch arguments
+
+printUsage() {
+    java -cp $BASEDIR/target/classes edu.tufts.cs.ml.preprocess.drivers.ProcessMissingValues --USAGE
+    exit
+}
+
+# mandatory arguments
+if [[ "$1" != "" && "$2" != "" && "$3" != "" && "$4" != "" && "$5" != "" ]]; then
+    if [[ "$@" == *--usage* ]]; then
+        printUsage
+    else
+        train="$1"
+        test="$2"
+        out_train="$3"
+	out_test="$4"
+	method="$5"
+    fi
+else
+    printUsage
+    exit
+fi
+
+java -cp $BASEDIR/target/classes edu.tufts.cs.ml.preprocess.drivers.ProcessMissingValues $train $test $out_train $out_test $method

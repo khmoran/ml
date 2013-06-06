@@ -1,0 +1,10 @@
+@relation HW1_TEST
+
+@attribute sepal_length real
+@attribute sepal_width real
+@attribute petal_length real
+@attribute petal_width real
+%attribute ExampleID
+
+@data
+6.7,3.1,4.4,1.4,x1

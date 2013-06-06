@@ -1,0 +1,38 @@
+#!/bin/bash
+                                                                              
+# path to this directory
+BASEDIR=$(dirname $0)
+
+# compile the code
+mkdir -p $BASEDIR/target/classes 
+echo find $BASEDIR/src/main/java/ -iname *.java > files.txt
+find $BASEDIR/src/main/java/ -iname *.java > files.txt
+javac @files.txt -d $BASEDIR/target/classes
+rm files.txt
+
+# catch arguments
+
+class=edu.tufts.cs.ml.cluster.outlier.drivers.DetectOutliers
+printUsage() {
+    java -cp $BASEDIR/target/classes $class --USAGE
+    exit
+}
+
+# mandatory arguments
+if [[ "$1" != "" && "$2" != "" ]]; then
+    if [[ "$@" == *--usage* ]]; then
+        printUsage
+    else
+        dataset1="$1"
+        dataset2="$2"
+    fi
+else
+    printUsage
+    exit
+fi
+
+if [[ "$3" != "" ]]; then
+    threshold="$3"
+fi
+
+java -cp $BASEDIR/target/classes $class $dataset1 $dataset2 $threshold

@@ -1,0 +1,13 @@
+@relation HW1_TRAIN
+
+@attribute sepal_length real
+@attribute sepal_width real
+@attribute petal_length real
+@attribute petal_width real
+@attribute CLASS_LABEL {versicolor,virginica,setosa}
+%attribute ExampleID
+
+@data
+6.1,2.9,4.7,1.4,versicolor,x4
+6.0,2.7,5.1,1.6,versicolor,x5
+6.0,2.7,5.1,1.6,setosa,x6    %an engineered tie
