@@ -112,7 +112,6 @@ public class Util {
   sortByEntries( Map<K, V> map ) {
     SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
         new Comparator<Map.Entry<K, V>>() {
-          @Override
           public int compare( Map.Entry<K, V> e1, Map.Entry<K, V> e2 ) {
             int res = e2.getValue().compareTo( e1.getValue() );
             return res != 0 ? res : 1; // Special fix to preserve items with
@@ -121,5 +120,14 @@ public class Util {
         } );
     sortedEntries.addAll( map.entrySet() );
     return sortedEntries;
+  }
+
+  /**
+   * Strip the punctuation, capitalization from the given String.
+   * @param s
+   * @return
+   */
+  public static String normalize( String s ) {
+    return s.trim().replaceAll( "[^a-zA-Z0-9]", "" ).toLowerCase();
   }
 }

@@ -197,6 +197,9 @@ public class KnnClassifier<E> implements Classifier<E> {
        */
       test.addClassification( k, classification );
     }
+
+    // TODO take the majority vote
+    test.setClassification( test.getClassification( 3 ) );
   }
 
   /**
@@ -230,7 +233,6 @@ public class KnnClassifier<E> implements Classifier<E> {
     return nearestNeighbors;
   }
 
-  @Override
   public double getCertainty( UnlabeledFeatureVector<E> test )
     throws IncomparableFeatureVectorException {
     return getCertainty( test, kVals[0] );

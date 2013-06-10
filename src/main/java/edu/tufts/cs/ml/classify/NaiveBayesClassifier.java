@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.tufts.cs.ml.LabeledFeatureVector;
@@ -19,8 +20,6 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
   /** The Logger. */
   private static final Logger LOG =  Logger.getLogger(
       NaiveBayesClassifier.class.getName() );
-  /** The training data. */
-  protected TrainRelation<E> trainingData;
   /** Feature means. */
   protected Map<E, Map<String, Double>> featureMeans =
       new HashMap<E, Map<String, Double>>();
@@ -74,7 +73,7 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
   }
 
   /**
-   * Calculate the Maximum Liklihood Estimation.
+   * Calculate the Maximum Likelihood Estimation.
    * @return
    */
   protected Map<E, Double> calculateMLE(
@@ -95,7 +94,7 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
         double stdev = stdevs.get( feat );
         double x = (Double) testInstance.get( feat ).getValue();
         double pdf = MathUtil.calcPdf( x, mean, stdev );
-
+  
         prob = prob * pdf;
       }
 
@@ -120,7 +119,7 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
       }
     }
 
-    // LOG.info( "Probabilities: " + probs );
+    LOG.log( Level.FINE, "Probabilities for " + testInstance.getId() + ": " + probs );
     testInstance.setClassification( max.getKey() );
   }
 
@@ -134,7 +133,6 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
     }
   }
 
-  @Override
   public double getCertainty( UnlabeledFeatureVector<E> testInstance ) {
     Map<E, Double> probs = calculateMLE( testInstance );
 
@@ -150,10 +148,11 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
       }
     }
 
-    LOG.info( "First place: " + max );
-    LOG.info( "Second place: " + second );
+    //LOG.info( "First place: " + max );
+    //LOG.info( "Second place: " + second );
 
-    return max.getValue() - second.getValue();
+    if ( second == null ) return 1.0;
+    else return max.getValue() - second.getValue();
   }
 
   /**
