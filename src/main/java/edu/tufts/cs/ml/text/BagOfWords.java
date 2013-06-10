@@ -64,6 +64,21 @@ public class BagOfWords<E> {
 
   /**
    * Train the classifier with this instance.
+   * @param fv
+   * @param clazz
+   */
+  public void train( FeatureVector<E> fv, E clazz ) {
+    if ( !trained.contains( fv.getId() ) ) {
+      LabeledFeatureVector<E> lfv = new LabeledFeatureVector<E>(
+          clazz, fv.getId() );
+      lfv.putAll( fv );
+      train.add( lfv );
+      trained.add( fv.getId() );
+    }
+  }
+
+  /**
+   * Train the classifier with this instance.
    * @param c
    * @param clazz
    */
@@ -80,6 +95,22 @@ public class BagOfWords<E> {
    */
   public TrainRelation<E> getTrainingData() {
     return this.train;
+  }
+
+  /**
+   * Get the training data.
+   * @return
+   */
+  public TrainRelation<E> getTrainingData( E clazz ) {
+    TrainRelation<E> subRelation = new TrainRelation<E>( "sub-relation",
+        (Metadata) train.getMetadata().clone() );
+    for ( LabeledFeatureVector<E> lfv : train ) {
+      if ( lfv.getLabel().equals( clazz ) ) {
+        subRelation.add( lfv );
+      }
+    }
+
+    return subRelation;
   }
 
   /**
