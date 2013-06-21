@@ -91,6 +91,14 @@ public abstract class LDA {
   public abstract Multimap<Double, Integer> getTopics( int docIdx );
 
   /**
+   * Get the top k terms for the provided topic.
+   *
+   * @param instance
+   * @return
+   */
+  public abstract String getTopTerms( int topic, int k );
+
+  /**
    * Get the topic assignment(s) for this Instance.
    *
    * @param instanceName

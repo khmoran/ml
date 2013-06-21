@@ -83,4 +83,10 @@ public class HierarchicalLDA extends LDA {
 
     return map;
   }
+
+  @Override
+  public String getTopTerms( int topic, int k ) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

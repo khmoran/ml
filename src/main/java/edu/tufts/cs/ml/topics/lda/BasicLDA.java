@@ -93,6 +93,28 @@ public class BasicLDA extends LDA {
   }
 
   @Override
+  public String getTopTerms( int topic, int k ) {
+    // The data alphabet maps word IDs to strings
+    Alphabet dataAlphabet = trainingData.getDataAlphabet();
+    TreeSet<IDSorter> terms = model.getSortedWords().get( topic );
+    if ( k > terms.size() ) k = terms.size(); // don't go outside bounds
+
+    StringBuilder sb = new StringBuilder();
+    for ( int i = 0; i < k; i++ ) {
+      IDSorter s = (IDSorter) terms.toArray()[i];
+      sb.append( dataAlphabet.lookupObject( s.getID() ) + ", " );
+      //    .append( s.getWeight() ).append( ", " );
+    }
+
+    int idx = sb.lastIndexOf( ", " );
+    if ( idx > 0 ) {
+      sb.replace( idx, idx+2, "" );
+    }
+
+    return sb.toString();
+  }
+
+  @Override
   public void printState( PrintStream ps ) {
     /**
      * Get topic per document results
