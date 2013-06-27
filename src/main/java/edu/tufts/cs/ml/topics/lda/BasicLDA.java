@@ -1,5 +1,6 @@
 package edu.tufts.cs.ml.topics.lda;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.TreeSet;
@@ -32,9 +33,8 @@ public class BasicLDA extends LDA {
    * @param alpha
    * @param beta
    */
-  public BasicLDA( int numTopics, double alpha,
-      double beta ) {
-    this( DEFAULT_STOP_LIST, DEFAULT_ENCODING, numTopics, alpha, beta );
+  public BasicLDA( int numTopics, double alpha, double beta ) {
+    this( null, null, numTopics, alpha, beta );
   }
 
   /**
@@ -45,9 +45,9 @@ public class BasicLDA extends LDA {
    * @param alpha
    * @param beta
    */
-  public BasicLDA( String stopWordsFile, int numTopics, double alpha,
+  public BasicLDA( File stopWordsFile, int numTopics, double alpha,
       double beta ) {
-    this( stopWordsFile, DEFAULT_ENCODING, numTopics, alpha, beta );
+    this( stopWordsFile, null, numTopics, alpha, beta );
   }
 
   /**
@@ -59,9 +59,9 @@ public class BasicLDA extends LDA {
    * @param alpha
    * @param beta
    */
-  public BasicLDA( String stopWordsFile, String encoding, int numTopics,
+  public BasicLDA( File stopWordsFile, String encoding, int numTopics,
       double alpha, double beta ) {
-    super( stopWordsFile );
+    super( stopWordsFile, encoding );
     this.numTopics = numTopics;
     this.alpha = alpha;
     this.beta = beta;

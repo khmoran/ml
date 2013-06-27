@@ -1,7 +1,8 @@
 package edu.tufts.cs.ml.topics.lda;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 
@@ -32,7 +33,7 @@ public class TestBasicLDA extends TestLDA {
   @Test
   public void testBasicLDA() throws IOException {
     BasicLDA lda = new BasicLDA(
-        STOP_WORDS, NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
+        new File( STOP_WORDS ), NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
     testLDA( lda, MODEL_OUTPUT, STATE_OUTPUT );
 
     assertTrue( lda != null );

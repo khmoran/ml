@@ -84,7 +84,8 @@ public class BagOfWords<E> {
    */
   public void train( String id, String text, E clazz ) {
     if ( !trained.contains( id  ) ) {
-      train.add( createLabeledFV( id, text, clazz ) );
+      LabeledFeatureVector<E> lfv = createLabeledFV( id, text, clazz );
+      train.add( lfv );
       trained.add( id );
     }
   }
@@ -94,7 +95,11 @@ public class BagOfWords<E> {
    * @return
    */
   public TrainRelation<E> getTrainingData() {
-    return this.train;
+    TrainRelation<E> copy = new TrainRelation<E>( train.getName(),
+        (Metadata) train.getMetadata().clone() );
+    copy.addAll( train );
+    
+    return copy;
   }
 
   /**
@@ -124,8 +129,8 @@ public class BagOfWords<E> {
     LabeledFeatureVector<E> lfv = new LabeledFeatureVector<E>(
         clazz, id );
 
-    createFV( text, lfv );
-
+    populateFV( text, lfv );
+    
     return lfv;
   }
 
@@ -138,7 +143,7 @@ public class BagOfWords<E> {
     UnlabeledFeatureVector<E> ufv = new UnlabeledFeatureVector<E>(
         id );
 
-    createFV( text, ufv );
+    populateFV( text, ufv );
 
     return ufv;
   }
@@ -148,7 +153,7 @@ public class BagOfWords<E> {
    * @param c
    * @param fv
    */
-  protected void createFV( String text, FeatureVector<E> fv ) {
+  protected void populateFV( String text, FeatureVector<E> fv ) {
     List<String> unnormalized = tokenizer.tokenize( text );
 
     Multiset<String> terms = HashMultiset.create();

@@ -84,7 +84,6 @@ public class ClassifyWithNaiveBayes {
 
     Classifier<String> c = new NaiveBayesClassifier<String>();
     c.train( train );
-    int[] kVals = {1, 3, 5, 7, 9};
     c.classify( test );
 
     /*
