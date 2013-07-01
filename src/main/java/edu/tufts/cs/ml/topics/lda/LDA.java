@@ -1,37 +1,22 @@
 package edu.tufts.cs.ml.topics.lda;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.regex.Pattern;
 
-import cc.mallet.pipe.CharSequence2TokenSequence;
-import cc.mallet.pipe.CharSequenceLowercase;
-import cc.mallet.pipe.Pipe;
-import cc.mallet.pipe.SerialPipes;
-import cc.mallet.pipe.TokenSequence2FeatureSequence;
-import cc.mallet.pipe.TokenSequenceRemoveNonAlpha;
-import cc.mallet.pipe.TokenSequenceRemoveStopwords;
-import cc.mallet.pipe.iterator.CsvIterator;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
 import com.google.common.collect.Multimap;
 
+import edu.tufts.cs.ml.util.MalletConverter;
+
 public abstract class LDA {
-  /** File containing stop words. */
-  public static final String DEFAULT_STOP_LIST =
-      "src/main/resources/stoplists/en.txt";
-  /** The default file encoding. */
-  public static final String DEFAULT_ENCODING = "UTF-8";
   /** The default number of iterations for estimating the model. */
   public static final int DEFAULT_NUM_ITERATIONS = 2000;
+  /** The default file encoding. */
+  public static final String DEFAULT_ENCODING = "UTF-8";
   /** Descending Double comparator. */
   public static final Comparator<Double> DESC_COMPAR_DBL =
     new Comparator<Double>() {
@@ -46,10 +31,6 @@ public abstract class LDA {
           return o1.compareTo( o2 );
         }
       };
-  /** The file containing the list of stop words. */
-  protected final File stopWords;
-  /** The encoding for the stop words file. */
-  protected final String stopWordsEncoding;
   /** The training data. */
   protected InstanceList trainingData;
 
@@ -57,18 +38,6 @@ public abstract class LDA {
    * Constructor using default English stop words.
    */
   public LDA() {
-    this.stopWords = new File( DEFAULT_STOP_LIST );
-    this.stopWordsEncoding = DEFAULT_ENCODING;
-  }
-
-  /**
-   * Default constructor.
-   *
-   * @param stopWordsFile
-   */
-  public LDA( String stopWordsFile ) {
-    this.stopWords = new File( stopWordsFile );
-    this.stopWordsEncoding = DEFAULT_ENCODING;
   }
 
   /**
@@ -77,9 +46,8 @@ public abstract class LDA {
    * @param stopWordsFile
    * @param encoding
    */
-  public LDA( String stopWordsFile, String encoding ) {
-    this.stopWords = new File( stopWordsFile );
-    this.stopWordsEncoding = encoding;
+  public LDA( File stopWordsFile, String encoding ) {
+    MalletConverter.setStopWords( stopWordsFile, encoding );
   }
 
   /**
@@ -124,60 +92,6 @@ public abstract class LDA {
   }
 
   /**
-   * Load the documents into an InstanceList.
-   *
-   * @return
-   * @throws IOException
-   */
-  public InstanceList loadInstances( File input, String encoding )
-    throws IOException {
-    Reader fileReader = new InputStreamReader( new FileInputStream( input ),
-        encoding );
-
-    return loadInstances( fileReader );
-  }
-
-  /**
-   * Load the documents into an InstanceList.
-   *
-   * @return
-   * @throws IOException
-   */
-  protected InstanceList loadInstances( Reader r ) {
-    ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
-
-    // Pipes: lowercase, tokenize, remove stopwords, map to features
-    pipeList.add( new CharSequenceLowercase() );
-    pipeList.add( new CharSequence2TokenSequence( Pattern
-        .compile( "\\p{L}[\\p{L}\\p{P}]+\\p{L}" ) ) );
-    pipeList.add( new TokenSequenceRemoveStopwords( stopWords,
-        stopWordsEncoding, false, false, false ) );
-    pipeList.add( new TokenSequenceRemoveNonAlpha() );
-    pipeList.add( new TokenSequence2FeatureSequence() );
-
-    InstanceList instances = new InstanceList( new SerialPipes( pipeList ) );
-
-    // create instances with: 3: data; 2: label; 1: name fields
-    instances.addThruPipe( new CsvIterator( r, Pattern
-        .compile( "^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)" ), 3, 2, 1 ) );
-
-    return instances;
-  }
-
-  /**
-   * Load the documents into an InstanceList.
-   *
-   * @return
-   * @throws IOException
-   */
-  public InstanceList loadInstances( String csvInput )
-    throws IOException {
-    Reader strReader = new StringReader( csvInput );
-
-    return loadInstances( strReader );
-  }
-
-  /**
    * Print the topics to the provided PrintStream.
    *
    * @param ps
@@ -217,7 +131,7 @@ public abstract class LDA {
    * @throws IOException
    */
   public void test( String testingFile ) throws IOException {
-    test( testingFile, DEFAULT_ENCODING );
+    test( testingFile );
   }
 
   /**
@@ -228,7 +142,7 @@ public abstract class LDA {
    */
   public void test( String testingFile, String encoding ) throws IOException {
     File f = new File( testingFile, encoding );
-    InstanceList testingData = loadInstances( f, encoding );
+    InstanceList testingData = MalletConverter.loadInstancesLDA( f, encoding );
 
     test( testingData );
   }
@@ -273,7 +187,7 @@ public abstract class LDA {
    */
   public void train( File trainingFile, String encoding, int iterations )
     throws IOException {
-    InstanceList t = loadInstances( trainingFile, encoding );
+    InstanceList t = MalletConverter.loadInstancesLDA( trainingFile, encoding );
 
     train( t, iterations );
   }
@@ -315,7 +229,7 @@ public abstract class LDA {
    * @throws IOException
    */
   public void train( String trainingData, int iterations ) throws IOException {
-    InstanceList t = loadInstances( trainingData );
+    InstanceList t = MalletConverter.loadInstancesLDA( trainingData );
 
     train( t, iterations );
   }

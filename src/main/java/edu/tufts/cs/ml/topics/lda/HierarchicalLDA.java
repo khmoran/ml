@@ -1,5 +1,6 @@
 package edu.tufts.cs.ml.topics.lda;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -22,7 +23,7 @@ public class HierarchicalLDA extends LDA {
    * @param stopWordsFile
    * @param numLevels
    */
-  public HierarchicalLDA( String stopWordsFile, int numLevels ) {
+  public HierarchicalLDA( File stopWordsFile, int numLevels ) {
     this( stopWordsFile, DEFAULT_ENCODING, numLevels );
   }
 
@@ -33,7 +34,7 @@ public class HierarchicalLDA extends LDA {
    * @param encoding
    * @param numLevels
    */
-  public HierarchicalLDA( String stopWordsFile, String encoding,
+  public HierarchicalLDA( File stopWordsFile, String encoding,
       int numLevels ) {
     super( stopWordsFile, encoding );
     this.numLevels = numLevels;

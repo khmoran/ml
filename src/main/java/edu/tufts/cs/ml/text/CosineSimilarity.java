@@ -1,8 +1,8 @@
 package edu.tufts.cs.ml.text;
 
+import edu.tufts.cs.ml.FeatureVector;
 import edu.tufts.cs.ml.LabeledFeatureVector;
 import edu.tufts.cs.ml.TrainRelation;
-import edu.tufts.cs.ml.UnlabeledFeatureVector;
 
 public class CosineSimilarity<E> {
   /** The second citation. */
@@ -29,7 +29,7 @@ public class CosineSimilarity<E> {
    * @param c
    * @return
    */
-  public double calculateSimilarity( UnlabeledFeatureVector<E> ufv ) {
+  public double calculateSimilarity( FeatureVector<E> ufv ) {
     if ( compareTo.isEmpty() ) {
       return 0.0;
     }

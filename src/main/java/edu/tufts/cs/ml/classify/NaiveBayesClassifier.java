@@ -94,7 +94,7 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
         double stdev = stdevs.get( feat );
         double x = (Double) testInstance.get( feat ).getValue();
         double pdf = MathUtil.calcPdf( x, mean, stdev );
-  
+
         prob = prob * pdf;
       }
 
@@ -119,7 +119,8 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
       }
     }
 
-    LOG.log( Level.FINE, "Probabilities for " + testInstance.getId() + ": " + probs );
+    LOG.log( Level.FINE, "Probabilities for " + testInstance.getId() + ": " +
+      probs );
     testInstance.setClassification( max.getKey() );
   }
 
@@ -133,6 +134,9 @@ public class NaiveBayesClassifier<E> implements Classifier<E> {
     }
   }
 
+  /**
+   * Get the classifier's certainty.
+   */
   public double getCertainty( UnlabeledFeatureVector<E> testInstance ) {
     Map<E, Double> probs = calculateMLE( testInstance );
 

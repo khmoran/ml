@@ -1,6 +1,5 @@
 package edu.tufts.cs.ml.topics.lda;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -34,8 +33,8 @@ public class TestBasicLDA extends TestLDA {
    */
   @Test
   public void testBasicLDA() throws IOException {
-    BasicLDA lda = new BasicLDA(
-        STOP_WORDS, NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
+    BasicLDA lda = new BasicLDA( new File(
+        STOP_WORDS ), NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
     testLDA( new File( INPUT_FILE ), lda, MODEL_OUTPUT, STATE_OUTPUT );
 
     assert lda != null;

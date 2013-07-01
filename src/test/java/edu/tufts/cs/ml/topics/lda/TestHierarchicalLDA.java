@@ -1,6 +1,5 @@
 package edu.tufts.cs.ml.topics.lda;
 
-
 import java.io.File;
 import java.io.IOException;
 
@@ -29,7 +28,8 @@ public class TestHierarchicalLDA extends TestLDA {
    */
   @Test
   public void testHLDA() throws IOException {
-    HierarchicalLDA lda = new HierarchicalLDA( STOP_WORDS, NUM_LEVELS );
+    HierarchicalLDA lda = new HierarchicalLDA(
+        new File( STOP_WORDS ), NUM_LEVELS );
     testLDA( new File( INPUT_FILE ), lda, NUM_ITERATIONS, MODEL_OUTPUT,
         STATE_OUTPUT );
 
