@@ -65,7 +65,7 @@ public class MalletConverter {
 
     return loadInstances( fileReader );
   }
-  
+
   /**
    * Prepare Instances for use with LDA.
    * @param r
@@ -132,8 +132,8 @@ public class MalletConverter {
     // Pipes: lowercase, tokenize, remove stopwords, map to features
     pipeList.add( new Target2Label() );
     pipeList.add( new CharSequenceLowercase() );
-    pipeList.add( new CharSequence2TokenSequence( Pattern
-        .compile( "(.*)=(.*)" ) ) );//"\\p{L}[\\p{L}\\p{P}]+\\p{L}" ) ) );
+    pipeList.add( new CharSequence2TokenSequence( Pattern.compile(
+        "(.*)=(.*)" ) ) ); //"\\p{L}[\\p{L}\\p{P}]+\\p{L}" ) ) );
     pipeList.add( new TokenSequenceRemoveStopwords( stopWords,
         stopWordsEncoding, false, false, false ) );
     pipeList.add( new TokenSequence2FeatureSequence() );
@@ -187,7 +187,6 @@ public class MalletConverter {
 
     return loadInstancesBoW( fileReader );
   }
-  
 
   /**
    * Load the documents into an InstanceList.
@@ -215,7 +214,7 @@ public class MalletConverter {
 
     return loadInstancesLDA( fileReader );
   }
-  
+
   /**
    * Convert to the Mallet format.
    * @param train
@@ -230,7 +229,8 @@ public class MalletConverter {
       sb.append( fv.getId() + "\t" );
 
       if ( isTrain ) {
-        sb.append( ( (LabeledFeatureVector<?>) fv ).getLabel().toString() + "\t" );
+        sb.append( (
+            (LabeledFeatureVector<?>) fv ).getLabel().toString() + "\t" );
       } else {
         sb.append( "X\t" );
       }
@@ -260,7 +260,8 @@ public class MalletConverter {
     StringBuffer sb = new StringBuffer( fv.getId() + "\t" );
 
     if ( isTrain ) {
-      sb.append( ( (LabeledFeatureVector<?>) fv ).getLabel().toString() + "\t" );
+      sb.append( (
+          (LabeledFeatureVector<?>) fv ).getLabel().toString() + "\t" );
     } else {
       sb.append( "1\t" );
     }
@@ -274,5 +275,12 @@ public class MalletConverter {
     InstanceList il = loadInstances( sb.toString() );
 
     return il.get( 0 );
+  }
+
+  /**
+   * Private constructor for utility class.
+   */
+  private MalletConverter() {
+    // purposely not instantiable
   }
 }

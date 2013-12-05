@@ -1,14 +1,16 @@
 package edu.tufts.cs.ml.topics.lda;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+
 
 
 public class TestHierarchicalLDA extends TestLDA {
+  /** Input file Format: (document Id) \t X \t (document text). */
+  public static final String INPUT_FILE =
+      "src/test/resources/docs_en_clopidogrel.csv";
   /** File to store topics. */
   public static final String MODEL_OUTPUT =
       "output/hlda.model";
@@ -26,16 +28,18 @@ public class TestHierarchicalLDA extends TestLDA {
    */
   @Test
   public void testHLDA() throws IOException {
-    HierarchicalLDA lda = new HierarchicalLDA( new File( STOP_WORDS ), NUM_LEVELS );
-    testLDA( lda, NUM_ITERATIONS, MODEL_OUTPUT, STATE_OUTPUT );
+    HierarchicalLDA lda = new HierarchicalLDA(
+        new File( STOP_WORDS ), NUM_LEVELS );
+    testLDA( new File( INPUT_FILE ), lda, NUM_ITERATIONS, MODEL_OUTPUT,
+        STATE_OUTPUT );
 
-    assertTrue( lda != null );
+    assert lda != null;
   }
 
   /**
    * Private constructor for utility class.
    */
-  protected TestHierarchicalLDA() {
+  public TestHierarchicalLDA() {
     super();
   }
 }

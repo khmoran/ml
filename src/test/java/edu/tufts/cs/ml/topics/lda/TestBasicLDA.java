@@ -1,18 +1,19 @@
 package edu.tufts.cs.ml.topics.lda;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import cc.mallet.types.InstanceList;
 
 import com.google.common.collect.Multimap;
 
 public class TestBasicLDA extends TestLDA {
+  /** Input file Format: (document Id) \t X \t (document text). */
+  public static final String INPUT_FILE =
+      "src/test/resources/docs_en_clopidogrel.csv";
   /** File to store topics. */
   public static final String MODEL_OUTPUT =
       "output/lda.model";
@@ -32,11 +33,11 @@ public class TestBasicLDA extends TestLDA {
    */
   @Test
   public void testBasicLDA() throws IOException {
-    BasicLDA lda = new BasicLDA(
-        new File( STOP_WORDS ), NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
-    testLDA( lda, MODEL_OUTPUT, STATE_OUTPUT );
+    BasicLDA lda = new BasicLDA( new File(
+        STOP_WORDS ), NUM_TOPICS, ALPHA_SUM_PRIOR, BETA_PRIOR );
+    testLDA( new File( INPUT_FILE ), lda, MODEL_OUTPUT, STATE_OUTPUT );
 
-    assertTrue( lda != null );
+    assert lda != null;
 
     InstanceList instances = lda.getTrainingData();
     for ( int i = 0; i < instances.size(); i++ ) {
@@ -52,7 +53,7 @@ public class TestBasicLDA extends TestLDA {
   /**
    * Private constructor for utility class.
    */
-  protected TestBasicLDA() {
+  public TestBasicLDA() {
     super();
   }
 }

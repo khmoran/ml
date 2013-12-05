@@ -233,6 +233,9 @@ public class KnnClassifier<E> implements Classifier<E> {
     return nearestNeighbors;
   }
 
+  /**
+   * Get the classifier's certainty.
+   */
   public double getCertainty( UnlabeledFeatureVector<E> test )
     throws IncomparableFeatureVectorException {
     return getCertainty( test, kVals[0] );
