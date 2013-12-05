@@ -2,6 +2,7 @@ package edu.tufts.cs.ml.reader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import edu.tufts.cs.ml.Relation;
 
@@ -23,5 +24,22 @@ public abstract class Reader<E> {
    * @throws IOException
    */
   public abstract Relation<?> read( File f, boolean ignoreLabels )
+    throws IOException;
+  
+  /**
+   * Read the file into a Relation of FeatureVectors.
+   * @param f
+   * @return
+   * @throws IOException
+   */
+  public abstract Relation<?> read( InputStream s ) throws IOException;
+
+  /**
+   * Read the file into a Relation of FeatureVectors.
+   * @param f
+   * @return
+   * @throws IOException
+   */
+  public abstract Relation<?> read( InputStream s, boolean ignoreLabels )
     throws IOException;
 }

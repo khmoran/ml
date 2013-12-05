@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import edu.tufts.cs.ml.DoubleFeature;
@@ -26,11 +27,23 @@ public class ArffReader<E> extends Reader<E> {
     return read( f, !IGNORE_LABELS );
   }
 
-  @SuppressWarnings( "unchecked" )
   @Override
   public Relation<?> read( File f, boolean ignoreLabels ) throws IOException {
     FileInputStream fis = new FileInputStream( f );
-    InputStreamReader isr = new InputStreamReader( fis );
+ 
+    return read( fis, ignoreLabels );
+  }
+
+  @Override
+  public Relation<?> read( InputStream s ) throws IOException {
+    return read( s, !IGNORE_LABELS );
+  }
+
+  @SuppressWarnings( "unchecked" )
+  @Override
+  public Relation<?> read( InputStream s, boolean ignoreLabels )
+      throws IOException {
+    InputStreamReader isr = new InputStreamReader( s );
     BufferedReader br = new BufferedReader( isr );
 
     boolean data = false;
@@ -140,7 +153,7 @@ public class ArffReader<E> extends Reader<E> {
     // close the streams
     br.close();
     isr.close();
-    fis.close();
+    s.close();
 
     return r;
   }

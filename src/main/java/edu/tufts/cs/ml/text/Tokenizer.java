@@ -6,14 +6,24 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import org.tartarus.snowball.ext.PorterStemmer;
+
+import edu.knowitall.tool.stem.SnowballStemmer;
 
 public class Tokenizer {
   /** The list of stop words. */
   protected HashSet<String> stoplist;
   /** The default generated serial version UID. */
   static final long serialVersionUID = 1;
+  /** The cache of stemmed words. */
+  protected static final Map<String, String> STEM_CACHE = new HashMap<String, String>();
+  /** The Snowball stemmer. */
+  protected static final SnowballStemmer STEMMER = new SnowballStemmer( new PorterStemmer() );
 
   /**
    * Default constructor using default EN-US stop words.
@@ -108,6 +118,36 @@ public class Tokenizer {
   @SuppressWarnings( "unchecked" )
   public Tokenizer deepClone() {
     return new Tokenizer( (HashSet<String>) stoplist.clone() );
+  }
+
+  /**
+   * Tokenize and stem the text.
+   * @param s
+   * @return
+   */
+  public List<String> tokenizeAndStem( String s ) {
+    List<String> words = tokenize( s );
+    List<String> stemmed = new ArrayList<String>();
+    for ( String word : words ) {
+      stemmed.add( stem( word ) );
+    }
+    
+    return stemmed;
+  }
+
+  /**
+   * Stem the word.
+   * @param word
+   * @return
+   */
+  protected static String stem( String word ) {
+    String stem = STEM_CACHE.get( word );
+    if ( stem == null ) {
+      stem = STEMMER.stem( word );
+      STEM_CACHE.put( word, stem );
+    }
+
+    return stem;
   }
 
   /**

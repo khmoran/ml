@@ -10,6 +10,7 @@
 		<guava.version>14.0.1</guava.version>
 		<testng.version>6.8</testng.version>
 		<commons-csv.version>1.0-SNAPSHOT</commons-csv.version>
+		<nlptools.version>2.4.1</nlptools.version>
 	</properties>
 
 	<dependencies>
@@ -20,9 +21,9 @@
 			<version>${mallet.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>mallet-libsvm</groupId>
-			<artifactId>mallet-libsvm</artifactId>
-			<version>1.0.0</version>
+			<groupId>edu.washington.cs.knowitall.nlptools</groupId>
+			<artifactId>nlptools-stem-snowball_2.10</artifactId>
+			<version>${nlptools.version}</version>
 		</dependency>
 
 		<!-- Parsing -->

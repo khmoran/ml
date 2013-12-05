@@ -81,6 +81,11 @@ public abstract class Feature<E> {
     return true;
   }
 
+  @Override
+  public String toString() {
+    return this.value.toString();
+  }
+
   /**
    * Get the Euclidean distance between the two features.
    * @param f

@@ -6,13 +6,17 @@ import edu.tufts.cs.ml.exception.IncomparableFeatureVectorException;
 import edu.tufts.cs.ml.util.Util;
 
 public abstract class FeatureVector<E> extends
-  LinkedHashMap<String, Feature<?>> {
+  LinkedHashMap<String, Feature<?>> implements Comparable<FeatureVector<E>> {
   /** Default generated serial version UID. */
   private static final long serialVersionUID = -5250706109618829326L;
   /** The vector id. */
   protected String id;
   /** Store the magnitude. */
   protected Double magnitude = null; // TODO this may need to be updated?
+  /** The rank (for svm-light). */
+  protected Integer rank = null;
+  /** The query id (for svm-light). */
+  protected Integer qid = null;
 
   /**
    * Default constructor that takes an id.
@@ -28,6 +32,38 @@ public abstract class FeatureVector<E> extends
    */
   public String getId() {
     return this.id;
+  }
+
+  /**
+   * Set the rank (for svm-light).
+   * @param rank
+   */
+  public void setRank( Integer rank ) {
+    this.rank = rank;
+  }
+
+  /**
+   * Get the rank (for svm-light).
+   * @return
+   */
+  public Integer getRank() {
+    return this.rank;
+  }
+
+  /**
+   * Set the query id (for svm-light).
+   * @param qid
+   */
+  public void setQid( Integer qid ) {
+    this.qid = qid;
+  }
+
+  /**
+   * Get the qid (for svm-light).
+   * @return
+   */
+  public Integer getQid() {
+    return this.qid;
   }
 
   /**
@@ -144,5 +180,9 @@ public abstract class FeatureVector<E> extends
       sum = sum + ( f1 * f2 );
     }
     return sum;
+  }
+
+  public int compareTo( FeatureVector<E> o ) {
+    return ( (Integer) this.size() ).compareTo( o.size() );
   }
 }

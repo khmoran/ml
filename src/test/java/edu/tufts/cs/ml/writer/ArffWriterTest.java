@@ -15,7 +15,7 @@ import edu.tufts.cs.ml.Relation;
 import edu.tufts.cs.ml.reader.ArffReader;
 import edu.tufts.cs.ml.reader.Reader;
 
-public class WriterTest extends TestCase {
+public class ArffWriterTest extends TestCase {
 
   /**
    * Test the ArffReader with training data.
